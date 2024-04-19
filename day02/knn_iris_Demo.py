@@ -48,7 +48,7 @@ def knn_iris_gscv():
     # 4.KNN算法预估器
     estimator = KNeighborsClassifier()
     # 加入网格收缩与交叉验证模型优化
-    param_grid = [{'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 17, 19, 21]}]
+    param_grid = {'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 17, 19, 21]}
     estimator = GridSearchCV(estimator=estimator, param_grid=param_grid, n_jobs=-1, cv=10)
     estimator.fit(x_train, y_train)
 
