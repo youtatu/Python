@@ -4,6 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
 
 
 def knn_iris_demo():
@@ -107,12 +108,43 @@ def nb_new():
     return None
 
 
+def tree_iris_demo():
+    """
+    使用决策树对鸢尾花进行分类
+    :return:
+    """
+    # 1. 获取数据集
+    iris = load_iris()
+    # 2. 划分数据集
+    x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, random_state=6)
+    # 3. 使用决策器预估器进行评估
+    estimator = DecisionTreeClassifier(criterion='entropy', splitter='best')
+    estimator.fit(x_train, y_train)
+
+    # 4. 模型评估
+    y_predict = estimator.predict(x_test)
+    print("y_predict\n", y_predict)
+    # 直接比对结果
+    print("直接比对结果:\n", y_test == y_predict)
+    # 计算准确率
+    accuracy = estimator.score(x_test, y_test)
+    print("Accuracy:\n", accuracy)
+
+    # 可视化决策树
+    export_graphviz(estimator, out_file='iris_tree.dot', feature_names=iris.feature_names,
+                    class_names=iris.target_names)
+    return None
+
+
 if __name__ == '__main__':
     # 代码1: 使用KNN对鸢尾花分类
     # knn_iris_demo()
 
     # 代码2: 使用KNN对鸢尾花分类,并进行调优
-    # knn_iris_gscv()
+    knn_iris_gscv()
 
     # 代码3: 用朴素贝叶斯算法对数据分类
-    nb_new()
+    # nb_new()
+
+    # 代码4: 使用决策树预测鸢尾花
+    tree_iris_demo()
